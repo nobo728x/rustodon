@@ -8,10 +8,6 @@ cache: cargo
 services:
   - postgresql
 
-before_install:
-  - sudo apt-get update -yqq
-  - sudo apt-get install -yqq libpq-dev
-
 env:
   - MIGRATION_DIR=migrations FEATURES=postgres DATABASE_URL=postgres://postgres@localhost/rustodon
 
