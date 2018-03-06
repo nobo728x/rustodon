@@ -8,7 +8,7 @@ use failure::Error;
 use validator::Validate;
 
 use db::{self, DieselConnection};
-use db::models::{validators, NewAccount, NewUser, User};
+use db::models::{validators, NewAccount, NewUser, User, make_id};
 use templates::Page;
 
 #[get("/auth/sign_in")]
@@ -134,6 +134,7 @@ pub fn signup_post(
 
     (*db_conn).transaction::<_, _, _>(|| {
         let account = NewAccount {
+            id: make_id(),
             domain: None,
             uri:    None,
 
@@ -144,6 +145,7 @@ pub fn signup_post(
         }.insert(&db_conn)?;
 
         NewUser {
+            id: make_id(),
             email: form_data.email.to_owned(),
             encrypted_password: User::encrypt_password(&form_data.password),
             account_id: account.id,
